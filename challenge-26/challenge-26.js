@@ -24,18 +24,23 @@
 	*/
 
 	function DOM( elements ) { // pode receber vários elementos
-		this.element = this.getDOMElements(elements); //todos os elementos que forem passados
-
+		this.element = document.querySelectorAll(elements); //todos os elementos que forem passados
 	}
 
-	DOM.prototype.getDOMElements = function getDOMElements() {
-		return document.querySelectorAll(elements);
-	};
+//para estender a lista!!!!!
+		DOM.prototype.on = function on(eventType, callback) { //quando desparar o evento, a função callback é desparada
+			Array.prototype.forEach.call(this.element, function() {
+				element.addEventListener(eventType, callback, false);
+			});
+		}; 
 
 //para estender a lista!!!!!
-		DOM.prototype.on = function on() {}; 
-//para estender a lista!!!!!
-		DOM.prototype.off = function off() {};
+		DOM.prototype.off = function off(eventType, callback) {
+			Array.prototype.forEach.call(this.element, function() {
+				element.removeEventListener(eventType, callback, false);
+			});
+		};
+
 //para estender a lista!!!!!
 		DOM.prototype.get = function get() {
 			return this.element;
@@ -43,9 +48,10 @@
 
 
 	var $a = new DOM('[data-js="link"]');
-	$a.on('click', function(e) {
+	$a.on('click', function handleClick(e) {
 	  e.preventDefault();
 	  console.log('clicou');
+	  $a.off('click' , handClick);
 	});
 
 	console.log('Elementos selecionados:', $a.get());
